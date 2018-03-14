@@ -19,7 +19,7 @@ if (command === 'add') {
         console.log('-------');
         console.log(`Title: ${result.title}`);
         console.log(`Content: ${result.body}`);
-    } else console.log('Duplicate note!');
+    } else console.log('Duplicate note title!');
 }
 else if (command === 'list') {
     notes.getAll();
@@ -28,6 +28,8 @@ else if (command === 'read') {
     notes.readNote(argv.title);
 }
 else if (command === 'remove') {
-    notes.removeNote(argv.title);
+    const result = notes.removeNote(argv.title);
+    if (result) console.log('Note was successfully deleted');
+    else console.log('Note wasn\'t found!');
 }
 else console.log('Command is unrecognized');
