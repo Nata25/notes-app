@@ -10,10 +10,16 @@ const argv = yargs.argv;
 // const command = process.argv[2];
 const command = argv._[0];
 
-console.log('yargs.argv', argv);
+// console.log('yargs.argv', argv);
 
 if (command === 'add') {
-    notes.addNote(argv.title, argv.body);
+    const result = notes.addNote(argv.title, argv.body);
+    if (result) {
+        console.log(`Note ${result} successfully added!`);
+        console.log('-------');
+        console.log(`Title: ${result.title}`);
+        console.log(`Content: ${result.body}`);
+    } else console.log('Duplicate note!');
 }
 else if (command === 'list') {
     notes.getAll();
