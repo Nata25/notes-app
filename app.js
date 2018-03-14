@@ -7,25 +7,27 @@ const notes = require('./note.js');
 
 const argv = yargs.argv;
 
-// const command = process.argv[2];
 const command = argv._[0];
-
-// console.log('yargs.argv', argv);
 
 if (command === 'add') {
     const result = notes.addNote(argv.title, argv.body);
     if (result) {
         console.log(`Note ${result} successfully added!`);
-        console.log('-------');
-        console.log(`Title: ${result.title}`);
-        console.log(`Content: ${result.body}`);
+        notes.log(result);
     } else console.log('Duplicate note title!');
 }
 else if (command === 'list') {
-    notes.getAll();
+    const notesList = notes.getAll();
+    console.log(`Printing ${notesList.length} note(s):`);
+    notesList.forEach(note => notes.log(note));
 }
 else if (command === 'read') {
-    notes.readNote(argv.title);
+    const result = notes.readNote(argv.title);
+    if (result) {
+        console.log('Note found!');
+        notes.log(result);
+    }
+    else console.log('Note not found');
 }
 else if (command === 'remove') {
     const result = notes.removeNote(argv.title);

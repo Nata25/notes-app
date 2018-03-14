@@ -1,4 +1,5 @@
 console.log('Starting notes.js...');
+
 const fs = require('fs');
 
 // read data about existing notes
@@ -13,37 +14,53 @@ const fetchNotes = () => {
 // update data about existing notes
 const saveNotes = (notes) => {
     fs.writeFileSync('notes-data.json', JSON.stringify(notes));
-}
+};
+
+const addNote = (title, body) => {
+    let notes = fetchNotes();
+    const note = {
+        title,
+        body,
+    };
+    
+    const notesDuplicates = notes.filter(note => note.title === title);
+    if (!notesDuplicates.length) {
+        notes.push(note);
+        saveNotes(notes);
+        return note;
+    }
+    else {
+        return '';
+    }
+};
+
+const readNote = (title) => {
+    const notes = fetchNotes();
+    return notes.find(note => note.title === title);
+};
+
+const getAll = () => {
+    return fetchNotes();
+};
+
+const removeNote = title => {
+    const notes = fetchNotes();
+    const filtered = notes.filter(note => note.title !== title);
+    saveNotes(filtered);
+    return notes.length !== filtered.length;
+};
+
+const log = obj => {
+    debugger;
+    console.log('-*-*-*-*-');
+    console.log(`Title: ${obj.title}`);
+    console.log(`Content: ${obj.body}`);
+};
 
 module.exports = {
-    age: 35,
-    addNote: function(title, body) {
-        let notes = fetchNotes();
-        const note = {
-            title,
-            body,
-        };
-        
-        const notesDuplicates = notes.filter(note => note.title === title);
-        if (!notesDuplicates.length) {
-            notes.push(note);
-            saveNotes(notes);
-            return note;
-        }
-        else {
-            return '';
-        }
-    },
-    getAll: function() {
-        console.log('Getting all notes...');
-    },
-    readNote: function(title) {
-        console.log('Reading note', title);
-    },
-    removeNote: function(title) {
-        const notes = fetchNotes();
-        const filtered = notes.filter(note => note.title !== title);
-        saveNotes(filtered);
-        return notes.length !== filtered.length;
-    }
+    addNote,
+    getAll,
+    readNote,
+    removeNote,
+    log,
 };
